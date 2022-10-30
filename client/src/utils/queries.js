@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const GET_USER = gql`
-  {
+  query user($_id: String) {
     user {
       _id
       username
@@ -9,12 +9,12 @@ export const GET_USER = gql`
       password
       bookCount
       savedBooks {
-        bookId
         authors
         description
-        title
+        bookId
         image
-        link
+        link       
+        title
       }
     }
   }
