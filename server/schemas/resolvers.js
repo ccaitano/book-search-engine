@@ -10,7 +10,7 @@ const resolvers = {
         },
     },
     Mutation: {
-        login: async(parent, { email, password }, context) => {
+        loginUser: async(parent, { email, password }, context) => {
             const user = await User.findOne({ email });
             if (!user) {
                 throw new AuthenticationError("Can't Find this User");
@@ -30,13 +30,15 @@ const resolvers = {
             }
             return { token, user };
         },
-        saveBook: async(parent, { book }, context) => {
+        saveBook: async(parent, { book } , context) => {
+            console.log( book );
             if(context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: book }},
+                    { $push: { savedBooks: { book }}},
                     { new: true },
                 );
+                console.log(updatedUser);
                 return updatedUser;
             }
             throw new AuthenticationError('Unable to Save Book');
@@ -44,7 +46,7 @@ const resolvers = {
         removeBook: async(parent, { bookId }, context) => {
             if(context.user) {
                 const updatedUser = await User.findOneAndUpdate(
-                    { _id: user._id },
+                    { _id: context.user._id },
                     { $pull: { savedBooks: { bookId: bookId }}},
                     { new: true },
                 );
