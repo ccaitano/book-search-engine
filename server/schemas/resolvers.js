@@ -42,11 +42,11 @@ const resolvers = {
             }
             throw new AuthenticationError('Unable to Save Book');
         },
-        removeBook: async(parent, { bookIdDelete }, context) => {
+        removeBook: async(parent, { bookId }, context) => {
             if(context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { savedBooks: { bookId: bookIdDelete }}},
+                    { $pull: { savedBooks: { bookId: bookId } }},
                     { new: true },
                 );
                 console.log(updatedUser);
