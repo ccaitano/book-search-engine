@@ -50,9 +50,6 @@ const SavedBooks = () => {
       const updatedData = await removeBook({
         variables: { bookId: bookId },
       });
-      if (error) {
-        throw new Error("Something Went Wrong!");
-      };
       setUserData(updatedData.data.removeBook);
       removeBookId(bookId);
     } catch (err) {
