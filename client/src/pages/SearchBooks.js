@@ -61,23 +61,23 @@ const SearchBooks = () => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+    console.log(token);
     if (!token) {
       return false;
     };
     console.log(bookToSave);
     try {
       const response = await saveBook({
-        variables: {book: bookToSave},
+        variables: { book: bookToSave},
       });
         // update: cache => {
         //   const { me } = cache.readQuery({ query: GET_ME });
         //   cache.writeQuery({ query: GET_ME, data: { me: { ...me, savedBooks: [...me.savedBooks, bookToSave] } } });
         // }
         console.log(response);
-        if (!response.ok) {
-          throw new Error('something went wrong!');
-        };
+        // if (!response.ok) {
+        //   throw new Error('something went wrong!');
+        // };
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
       console.log(err);

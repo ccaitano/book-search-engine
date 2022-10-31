@@ -31,11 +31,10 @@ const resolvers = {
             return { token, user };
         },
         saveBook: async(parent, { book } , context) => {
-            console.log( book );
             if(context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $push: { savedBooks: { book }}},
+                    { $push: { savedBooks: book }},
                     { new: true },
                 );
                 console.log(updatedUser);
@@ -43,13 +42,14 @@ const resolvers = {
             }
             throw new AuthenticationError('Unable to Save Book');
         },
-        removeBook: async(parent, { bookId }, context) => {
+        removeBook: async(parent, { bookIdDelete }, context) => {
             if(context.user) {
                 const updatedUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $pull: { savedBooks: { bookId: bookId }}},
+                    { $pull: { savedBooks: { bookId: bookIdDelete }}},
                     { new: true },
                 );
+                console.log(updatedUser);
                 return updatedUser;
             }
             throw new AuthenticationError("Couldn't Find a User with this ID!");
